@@ -16,6 +16,7 @@ body {
   background: url(../assets/images/experiment.jpg) fixed center no-repeat;
   background-size: cover;
   font-family: vazir;
+  position: relative;
 }
 
 .container {
@@ -31,9 +32,12 @@ header section {
   position: absolute;
   top: 10%;
   left: -50%;
+  z-index: 2;
   transform: translateX(50%);
-  background: #bd19e6;
+  backdrop-filter: blur(5px);
+  background: #00000028;
 }
+
 .addExperiment {
   padding: 10px;
   display: flex;
@@ -58,7 +62,7 @@ header section {
   left: 0;
   background-color: #0000005b;
   backdrop-filter: blur(5px);
-  position: fixed;
+  position: absolute;
   z-index: 2;
   display: none;
   align-items: center;
@@ -96,11 +100,49 @@ header section {
 .addExperimentBtn:active {
   opacity: 0.7;
 }
+.addExperimentContainer .alert {
+  display: none;
+  position: absolute;
+  top: 60px;
+  right: 0;
+  z-index: 3;
+  padding: 5px;
+  overflow: hidden;
+  background-color: #ff0000;
+  color: #fff;
+}
+.addExperimentContainer .alert p {
+  text-wrap: nowrap;
+}
+.addExperimentContainer .alert.error {
+  display: flex;
+  width: 0;
+  min-width: 200px;
+  animation: alert 0.4s ease;
+}
+.addExperimentContainer .alert.active {
+  display: flex;
+  width: 0;
+  min-width: 200px;
+  animation: alert 0.4s ease;
+  background-color: #ffd700;
+  color: #000;
+}
+
+@keyframes alert {
+  0% {
+    min-width: 0;
+  }
+  100% {
+    min-width: 200px;
+  }
+}
 main {
   width: 100%;
   position: absolute;
   top: 25%;
   left: 50%;
+  z-index: 0;
   padding: 0 10px;
   transform: translateX(-50%);
 }
@@ -112,36 +154,83 @@ main {
   align-items: center;
   justify-content: center;
   gap: 20px;
+  position: relative;
 }
+
 .searchContainer {
-  width: 100%;
+  width: 100px;
   max-width: 400px;
   padding: 0 10px;
-  overflow: hidden;
   border-radius: 20px;
   align-items: center;
   display: flex;
   margin: 0 auto;
   background-color: #eee;
   box-shadow: 0 0 30px #000;
+  position: relative;
+  transition: all .3s linear;
 }
-
-.searchContainer input {
+.searchContainer.active {
   width: 100%;
+}
+.searchContainer .experimentName {
+  display: inline-block;
+  width: 30px;
   font-family: vazir;
   padding: 10px;
   background-color: transparent;
+  transition: all .2s linear;
+}
+.searchContainer.active .experimentName {
+  width: 100%;
 }
 .searchContainer button {
-  display: inline-block;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  background-color: red;
+  padding: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
-  padding: 5px;
   font-size: 20px;
   cursor: pointer;
 }
-.searchContainer button:active {
-  color: aqua;
+.searchContainer button:hover {
+  color: #3f3e3b;
 }
+.searchContainer button:active {
+  opacity: 0.7;
+}
+.searchContainer .alert {
+  display: none;
+  position: absolute;
+  top: -40px;
+  z-index: 3;
+  padding: 5px;
+  overflow: hidden;
+  background-color: #ff0000;
+  color: #fff;
+}
+.searchContainer .alert p {
+  text-wrap: nowrap;
+}
+.searchContainer .alert.error {
+  display: flex;
+  width: 0;
+  min-width: 200px;
+  animation: alert 0.4s ease;
+}
+.searchContainer .alert.active {
+  display: flex;
+  width: 0;
+  min-width: 200px;
+  animation: alert 0.4s ease;
+  background-color: #ffd700;
+  color: #000;
+}
+
 .experiments {
   width: 100%;
   max-width: 500px;
@@ -149,7 +238,8 @@ main {
   padding: 10px 5px;
   display: flex;
   flex-direction: column;
-  background-color: #e7e7e7;
+  background-color: #eeeeee23;
+  backdrop-filter: blur(5px);
   box-shadow: 0 0 10px #000;
   color: #fff;
   border-radius: 10px;
@@ -160,14 +250,8 @@ main {
 .experiments::-webkit-scrollbar {
   width: 7px;
 }
-.experiments::-webkit-scrollbar-button {
-  display: none;
-}
 .experiments::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.685);
-}
-.experiments::-webkit-scrollbar-track {
-  background-color: #13a9ff4b;
+  background-color: #000000af;
 }
 .experiments .item {
   width: 100%;
@@ -176,11 +260,35 @@ main {
   justify-content: space-between;
   padding: 10px;
   background-color: #000000;
-  box-shadow: 0 0 10px #727272;
+  box-shadow: 0 0 10px #000000;
   border-radius: 20px;
+  transform: translateY(0);
+  animation: item 0.3s ease;
+  position: relative;
+}
+@keyframes item {
+  0% {
+    top: 100%;
+  }
+  100% {
+    top: 0;
+  }
 }
 .experiments .item.hide {
+  animation: hideItem 0.3s ease;
   display: none;
+}
+@keyframes hideItem {
+  0% {
+    display: flex;
+  }
+  50% {
+    transform: translateX(110%);
+  }
+  100% {
+    transform: translateX(110%);
+    display: none;
+  }
 }
 .experiments .item i {
   font-size: 25px;
@@ -195,8 +303,8 @@ main {
   color: #ff0000;
   cursor: pointer;
 }
-.experiments .item.complate .status {
-  color: #4be09b;
+.experiments .item.complete .status {
+  color: #00ff62;
 }
 
 .experiments .emptyContainer {
@@ -211,6 +319,6 @@ main {
   left: 0;
   font-size: 30px;
 }
-.experiments.empty .emptyContainer {
+.experiments .emptyContainer.empty {
   display: flex;
 }
