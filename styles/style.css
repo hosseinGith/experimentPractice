@@ -100,43 +100,7 @@ header section {
 .addExperimentBtn:active {
   opacity: 0.7;
 }
-.addExperimentContainer .alert {
-  display: none;
-  position: absolute;
-  top: 60px;
-  right: 0;
-  z-index: 3;
-  padding: 5px;
-  overflow: hidden;
-  background-color: #ff0000;
-  color: #fff;
-}
-.addExperimentContainer .alert p {
-  text-wrap: nowrap;
-}
-.addExperimentContainer .alert.error {
-  display: flex;
-  width: 0;
-  min-width: 200px;
-  animation: alert 0.4s ease;
-}
-.addExperimentContainer .alert.active {
-  display: flex;
-  width: 0;
-  min-width: 200px;
-  animation: alert 0.4s ease;
-  background-color: #ffd700;
-  color: #000;
-}
 
-@keyframes alert {
-  0% {
-    min-width: 0;
-  }
-  100% {
-    min-width: 200px;
-  }
-}
 main {
   width: 100%;
   position: absolute;
@@ -167,8 +131,7 @@ main {
   margin: 0 auto;
   background-color: #eee;
   box-shadow: 0 0 30px #000;
-  position: relative;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 .searchContainer.active {
   width: 100%;
@@ -179,7 +142,7 @@ main {
   font-family: vazir;
   padding: 10px;
   background-color: transparent;
-  transition: all .2s linear;
+  transition: all 0.2s linear;
 }
 .searchContainer.active .experimentName {
   width: 100%;
