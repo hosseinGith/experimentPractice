@@ -89,16 +89,6 @@ function main() {
       if (!experimentName.value) {
         return item.classList.remove("hide");
       }
-      if (item.checkVisibility()) isTrue = true;
-      else isTrue = false;
-      if (!isTrue) {
-        alertMassage[1].classList.add("active");
-        alertMassage[1].children[0].textContent = "اسم وجود ندارد";
-        if (clearInterval(timeout) !== undefined) return clearInterval(timeout);
-        timeout = setTimeout(() => {
-          alertMassage[1].classList.remove("active");
-        }, 2000);
-      }
       item.classList.add("hide");
       if (item.querySelector("p").textContent.includes(experimentName.value)) {
         item.classList.remove("hide");
@@ -158,7 +148,6 @@ function main() {
     removeClass(addExperimentContainer, "active");
     isEmpty();
   };
-  let isTrue = false;
   experimentName.addEventListener("keyup", () => {
     searchFunc();
   });
