@@ -24,13 +24,23 @@ function main() {
   // function for create the items or A item
   function createItem(name, status, index) {
     // create Elements
+    function removeDiv() {
+      let filtered = getData.filter((item) => item.name != p.textContent);
+      getData = filtered;
+      localStorage.setItem("data", JSON.stringify(getData));
+      div.remove();
+      isEmpty();
+    }
+
     let div = document.createElement("div");
     let statusContainer = document.createElement("div");
     let span = document.createElement("span");
     let span2 = document.createElement("span");
     let p = document.createElement("p");
     let i = document.createElement("i");
-
+    let oldTouch;
+    let isTouch = false;
+    let oldPostion = 0;
     // add classes
     i.classList.add("fa");
     i.classList.add("fa-remove");
@@ -42,6 +52,50 @@ function main() {
     span2.textContent = status;
     span2.title = "برای تغییر وضعیت کلیک کنید";
     span.textContent = " وضعیت : ";
+    div.addEventListener("mousedown", (e) => {
+      isTouch = true;
+      oldTouch = e.clientX;
+    });
+    div.addEventListener("touchstart", (e) => {
+      isTouch = true;
+      oldTouch = e.touches[0].clientX;
+    });
+
+    div.addEventListener("mousemove", (e) => {
+      if (!isTouch) return;
+      if (oldTouch < e.clientX) {
+        oldPostion += 15;
+        div.style.translate = `${oldPostion}px`;
+      } else if (oldTouch > e.clientX) {
+        oldPostion += -15;
+        div.style.translate = `${oldPostion}px`;
+      }
+      if (oldPostion >= "230") {
+        removeDiv();
+      } else if (oldPostion <= "-230") {
+        removeDiv();
+      }
+    });
+    div.addEventListener("touchmove", (e) => {
+      if (oldTouch < e.touches[0].clientX) {
+        oldPostion += 15;
+        div.style.translate = `${oldPostion}px`;
+      } else if (oldTouch > e.touches[0].clientX) {
+        oldPostion += -15;
+        div.style.translate = `${oldPostion}px`;
+      }
+      if (oldPostion >= "230") {
+        removeDiv();
+      } else if (oldPostion <= "-230") {
+        removeDiv();
+      }
+    });
+    div.addEventListener("mouseup", (e) => {
+      isTouch = false;
+    });
+    div.addEventListener("mouseleave", (e) => {
+      isTouch = false;
+    });
     statusContainer.addEventListener("click", () => {
       statusContainer.parentElement.classList.toggle("complete");
       statusContainer.parentElement.classList.contains("complete")
@@ -53,11 +107,7 @@ function main() {
     });
 
     i.onclick = () => {
-      let filtered = getData.filter((item) => item.name != p.textContent);
-      getData = filtered;
-      localStorage.setItem("data", JSON.stringify(getData));
-      div.remove();
-      isEmpty();
+      removeDiv();
     };
     // append the element in experiment
     div.appendChild(p);
@@ -148,9 +198,7 @@ function main() {
     removeClass(addExperimentContainer, "active");
     isEmpty();
   };
-  experimentName.addEventListener("keyup", () => {
-    searchFunc();
-  });
+  experimentName.addEventListener("keyup", searchFunc);
   searchBtn.onclick = () => {
     searchBtn.parentElement.classList.toggle("active");
     if (searchBtn.parentElement.classList.contains("active")) {

@@ -10,6 +10,7 @@
   box-sizing: border-box;
   border: 0;
   outline: 0;
+  user-select: none;
 }
 body {
   min-height: 100vh;
@@ -181,11 +182,14 @@ main {
   padding: 10px;
   background-color: transparent;
   transition: all 0.3s linear;
+  animation: inputSearch 0.3s linear;
 }
+
 .searchContainer.active .experimentName {
   display: inline-block;
   width: 100%;
 }
+
 .searchContainer button {
   width: 50px;
   height: 50px;
@@ -205,33 +209,6 @@ main {
 .searchContainer button:active {
   opacity: 0.7;
 }
-.searchContainer .alert {
-  display: none;
-  position: absolute;
-  top: -40px;
-  z-index: 3;
-  padding: 5px;
-  overflow: hidden;
-  background-color: #ff0000;
-  color: #fff;
-}
-.searchContainer .alert p {
-  text-wrap: nowrap;
-}
-.searchContainer .alert.error {
-  display: flex;
-  width: 0;
-  min-width: 200px;
-  animation: alert 0.4s ease;
-}
-.searchContainer .alert.active {
-  display: flex;
-  width: 0;
-  min-width: 200px;
-  animation: alert 0.4s ease;
-  background-color: #ffd700;
-  color: #000;
-}
 
 .experiments {
   width: 100%;
@@ -247,6 +224,7 @@ main {
   border-radius: 10px;
   gap: 30px;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 }
 .experiments::-webkit-scrollbar {
